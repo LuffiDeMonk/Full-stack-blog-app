@@ -12,7 +12,18 @@ const PostSchema = new Schema({
     posterImage: {
         type: String,
         required: true
+    },
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: "User"
+    },
+    category: {
+        type: String,
+        required: true
     }
+
+}, {
+    timestamps: true
 })
 
 

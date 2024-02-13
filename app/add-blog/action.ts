@@ -1,17 +1,24 @@
-'use server';
+'use server'
 
-import { Post } from "@/backend/models/post";
-import { storage } from "@/firebase";
-import { connectToDB } from "@/lib/connectToDb";
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
+import { auth } from "@/auth"
+import { Post } from "@/backend/models/post"
+import { storage } from "@/firebase"
+import { connectToDB } from "@/lib/connectToDb"
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage"
+import { revalidatePath } from "next/cache"
+
 
 export const addBlog = async (formData: FormData) => {
 
+    const session = await auth()
+    const user = session?.user.id
+
     const title = formData.get('title')
     const description = formData.get('description')
-    const blogImage = formData.get('Poster') as File
+    const blogImage = formData.get('poster') as File
+    const category = formData.get('category')
 
-    const fileRef = ref(storage, "images")
+    const fileRef = ref(storage, `images/${blogImage.name}`)
 
     try {
         const fileUrl = await uploadBytes(fileRef, blogImage)
@@ -22,17 +29,21 @@ export const addBlog = async (formData: FormData) => {
         const newPost = new Post({
             title,
             description,
-            posterImage
+            posterImage,
+            category,
+            user
         })
 
         await newPost.save()
+        revalidatePath('/blogs')
+
+        return {
+            success: "New Blog post created successfully"
+        }
 
     } catch (error) {
-        console.log(error)
+        return {
+            error: "An Unknown error occured"
+        }
     }
-
-    // uploadBytes(fileRef, blogImage).then(data => {
-    //     getDownloadURL(data.ref).then(url => console.log(url))
-    // })
-
 }

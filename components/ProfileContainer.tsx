@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { auth, signOut } from '@/auth'
 import Link from 'next/link'
+import { Avatar, AvatarImage } from './ui/avatar'
 
 type props = {
     user: {
@@ -33,7 +34,10 @@ export default async function ProfileContainer() {
                     {
                         session !== null &&
 
-                        <Image src={session.user?.image!} width={30} height={30} alt='Image' className='rounded-full' />
+                        <Avatar>
+                            <AvatarImage src={session.user?.image!} alt={session.user?.name!} />
+                        </Avatar>
+
                     }
                 </Button>
             </DropdownMenuTrigger>
