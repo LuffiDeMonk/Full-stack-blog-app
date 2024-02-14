@@ -6,7 +6,7 @@ export const GET = async (req: Request, { params }: { params: { blog: string } }
     const blogId = params.blog;
     connectToDB()
     try {
-        const selectedPost = await Post.findById(blogId).populate({ path: 'user', select: ['name', 'image'] })
+        const selectedPost = await Post.findById(blogId).limit(3).populate({ path: 'user', select: ['name', 'image'] })
         if (!selectedPost) {
             return NextResponse.json({ error: "No post for the given id" })
         }

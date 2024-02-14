@@ -30,7 +30,7 @@ export const metadata: Metadata = {
 }
 
 const fetchAllPosts = async (search: string, category?: string) => {
-    const response = await fetch(`http://localhost:3000/blogs/api?search=${search}&category=${category}`, {
+    const response = await fetch(`${process.env.DB_URL}/blogs/api?search=${search}&category=${category}`, {
         next: {
             revalidate: 100
         }

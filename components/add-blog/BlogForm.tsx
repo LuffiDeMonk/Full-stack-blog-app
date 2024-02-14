@@ -22,6 +22,7 @@ export default function BlogForm() {
 
     const { register, handleSubmit, reset, formState: { errors, isSubmitting }, watch, setValue } = useForm<TFormSchema>({
         resolver: zodResolver(FormSchema),
+
     })
 
     const editorContent = watch('description')
