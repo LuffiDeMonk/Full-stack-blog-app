@@ -20,7 +20,7 @@ type APIResponse = {
 }
 
 const getSingleBlog = async (blogID: string) => {
-    const response = await fetch(`${process.env.DB_URL}/api/blogs/${blogID}`, { next: { revalidate: 3600 } })
+    const response = await fetch(`https://full-stack-blog-app-inky.vercel.app/api/blogs/${blogID}`, { next: { revalidate: 3600 } })
     if (!response.ok) {
         console.log('error in fetching individual blog post')
         return false
